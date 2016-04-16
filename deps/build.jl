@@ -56,8 +56,8 @@ cmake_options = [
     "-DWITH_VTK=OFF",
     "-DWITH_MATLAB=OFF",
     "-DWITH_FFMPEG=OFF",
-    "-DWITH_OPENMP=ON",
-    "-DWITH_QT=ON",
+#    "-DWITH_OPENMP=ON",
+#     "-DWITH_QT=ON",
 ]
 
 ### Build opencv from source ###
