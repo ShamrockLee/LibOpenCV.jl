@@ -1,13 +1,18 @@
 # Documentation: http://docs.travis-ci.com/user/languages/julia/
+sudo: false
 language: julia
 os:
-  - linux
+#   - linux
   - osx
 julia:
-  - release
+  - 0.5
   - nightly
 notifications:
   email: false
+install:
+    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then export CXX="g++-6" CC="gcc-6"; fi
+    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export CXX="clang++" CC="clang"; fi
+    - export JULIA_CPU_CORES=2
 # uncomment the following lines to override the default test script
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi

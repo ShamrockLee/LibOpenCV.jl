@@ -1,5 +1,5 @@
 using LibOpenCV
+using Cxx
 using Base.Test
 
-# write your own tests here
-@test 1 == 1
+@test cxx"""#include <opencv2/core.hpp>"""
