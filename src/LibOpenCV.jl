@@ -20,6 +20,7 @@ else
     error("LibOpenCV not properly installed. Please run Pkg.build(\"LibOpenCV\")")
 end
 
+using DocStringExtensions
 using Cxx
 
 Libdl.dlopen(libopencv_core, Libdl.RTLD_GLOBAL)
@@ -27,6 +28,37 @@ Libdl.dlopen(libopencv_core, Libdl.RTLD_GLOBAL)
 const libdir = dirname(libopencv_core)
 const libext = splitext(libopencv_core)[2]
 
+
+"""
+$(SIGNATURES)
+
+It tries to search the specified library by name. Not exported, but meant to be
+used by other opencv packages.
+
+**Parameters**
+
+- `mod` : Module name
+- `libdirs` : library seach directries (default is dir of `libopencv_highgui`)
+- `ext` : library extention name (e.g. `.so`)
+
+**Retures**
+
+- `libpath` : library path if found, othrewise return `C_NULL`
+
+**Examples**
+
+From the [CVHighGUI.jl](@ref) package,
+
+```julia
+libopencv_highgui = LibOpenCV.find_library_e("libopencv_highgui")
+try
+    Libdl.dlopen(libopencv_highgui, Libdl.RTLD_GLOBAL)
+catch e
+    warn("You might need to set DYLD_LIBRARY_PATH to load dependencies proeprty.")
+    rethrow(e)
+end
+```
+"""
 function find_library_e(mod, libdirs=[libdir], ext=libext)
     for libdir in libdirs
         libpath = joinpath(libdir, string(mod, ext))
