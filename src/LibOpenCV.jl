@@ -1,6 +1,16 @@
-module LibOpenCV
+"""
+A special package that manages opencv binary depedencies
 
-using BinDeps
+```julia
+Pkg.build("LibOpenCV")
+```
+
+try to search your system opencv libraries and its dependencies, and throws errors
+if any issues. If opencv librarires are not found, it will install fresh opencv
+libraries into `deps` directrory, but not recommended unless if you have perfect
+requiremsnts to build opencv.
+"""
+module LibOpenCV
 
 # Load dependency
 deps = joinpath(Pkg.dir("LibOpenCV"), "deps", "deps.jl")
@@ -24,8 +34,7 @@ function find_library_e(mod, libdirs=[libdir], ext=libext)
             return libpath
         end
     end
-
-    error("Cannot find $mod")
+    C_NULL
 end
 
 const incdir = replace(libdir, "\/lib", "\/include")
