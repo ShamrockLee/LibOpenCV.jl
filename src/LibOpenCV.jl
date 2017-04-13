@@ -20,6 +20,7 @@ else
     error("LibOpenCV not properly installed. Please run Pkg.build(\"LibOpenCV\")")
 end
 
+import Base.Filesystem
 using DocStringExtensions
 using Cxx
 
@@ -69,14 +70,27 @@ function find_library_e(mod, libdirs=[libdir], ext=libext)
     C_NULL
 end
 
-const incdir = replace(libdir, "\/lib", "\/include")
-@assert isdir(incdir)
+# Split the library directory in folders.
+folder_path = split(libdir, Base.Filesystem.path_separator);
+# Change the last "lib" part to "include". This is a wild guess, but quite
+# robust.
+lib_ids = find(folder_path .== "lib")
+@assert (size(lib_ids, 1) > 0) "Include path could not be guessed!"
+folder_path[lib_ids[end]] = "include";
+const incdir = join(folder_path, Base.Filesystem.path_separator);
+@assert isdir(incdir) "Include path could not be guessed: $(incdir)!"
 
 opencvhpp = joinpath(incdir, "opencv2", "opencv.hpp")
 if !isfile(opencvhpp)
     error("Cannot find $(opencvhpp)")
 end
 
+# Add libraries first as user include (-I), then as well as system includes.
+# The former is necessary to get preference over the system installed OpenCV if
+# necessary, the latter is necessary to have the internal OpenCV include with
+# quotes (<>) work.
+addHeaderDir(incdir, kind=C_User)
+addHeaderDir(joinpath(incdir, "opencv2"), kind=C_User)
 addHeaderDir(incdir, kind=C_System)
 addHeaderDir(joinpath(incdir, "opencv2"), kind=C_System)
 
