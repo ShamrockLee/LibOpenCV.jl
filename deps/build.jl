@@ -56,6 +56,7 @@ cmake_options = [
     "-DWITH_VTK=OFF",
     "-DWITH_MATLAB=OFF",
     "-DWITH_FFMPEG=OFF",
+    "-DENABLE_PRECOMPILED_HEADERS=OFF",
 #    "-DWITH_OPENMP=ON",
 #     "-DWITH_QT=ON",
 ]
@@ -78,3 +79,4 @@ provides(SimpleBuild,
           end), opencv_core, os = :Unix)
 
 @BinDeps.install @compat Dict(:libopencv_core => :libopencv_core)
+
