@@ -78,5 +78,5 @@ provides(SimpleBuild,
                 end
           end), opencv_core, os = :Unix)
 
-@BinDeps.install @compat Dict(:libopencv_core => :libopencv_core)
+@BinDeps.install Dict(:libopencv_core => :libopencv_core)
 
