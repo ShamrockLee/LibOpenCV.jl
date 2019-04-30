@@ -12,6 +12,11 @@ requiremsnts to build opencv.
 """
 module LibOpenCV
 
+# Use Pkg if VERSION >= v"0.7"
+if VERSION >= v"0.7"
+    using Pkg
+end
+
 # Load dependency
 deps = joinpath(Pkg.dir("LibOpenCV"), "deps", "deps.jl")
 if isfile(deps)
